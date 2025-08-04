@@ -1,0 +1,3 @@
+import numpy as np perf="perf.data"
+data=np.fromfile(perf, dtype=np.int16) print("first 100 values:")
+print(data[:100])
