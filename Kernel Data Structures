@@ -1,0 +1,33 @@
+
+#include <linux/init.h>
+#include <linux/module.h> 
+#include <linux/kernel.h> 
+#include <linux/sched.h>
+#include <linux/sched/task.h>
+#include <linux/cred.h>
+#include <linux/mm.h>
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("BUGGY");
+MODULE_DESCRIPTION("Kernel module to print task_struct info of current process");
+static int __init taskinfo_init(void)
+{
+struct task_struct *task = current;
+struct mm_struct *mm;
+const struct cred *cred;
+printk(KERN_INFO "==task info==");
+printk(KERN_INFO "PID : %d\n",current->pid); printk(KERN_INFO "Name : %s\n", task->comm);
+cred = get_task_cred(task);
+printk(KERN_INFO "UID : %d\n", cred->uid.val); put_cred(cred);
+mm = task->mm;
+if (mm){
+}else{
+return 0;
+printk(KERN_INFO "VmSize
+:%%lu KB\n",mm->total_vm <<< (PAGE_SHIFT -10));
+printk(KERN_INFO "No mm_struct (lernel thread)?\n");}
+static void _exit taskinfo_exit(void)
+}
+{
+printk(KERN_INFO "task info module unloaded.\n");
+module_init(taskinfo_init);
+module_exit(taskinfo_exit);
